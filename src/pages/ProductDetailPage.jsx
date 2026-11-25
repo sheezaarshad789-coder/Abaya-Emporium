@@ -11,7 +11,7 @@ import {
   Star,
   Truck,
 } from 'lucide-react';
-import { getStoreProducts, getProductBySlug } from '../data/products';
+import { PRODUCTS, getProductBySlug } from '../data/products';
 import {
   STOCK_STATUS,
   crossSellHeading,
@@ -101,7 +101,6 @@ export default function ProductDetailPage() {
   const variant = findVariant(product, size, color);
   const status = variant ? stockStatus(variant.stock) : 'out_of_stock';
   const usesLength = sizes.some((option) => option !== 'free');
-  const PRODUCTS = getStoreProducts();
   const related = getRelatedProducts(product, PRODUCTS);
 
   const chooseColor = (nextColor) => {

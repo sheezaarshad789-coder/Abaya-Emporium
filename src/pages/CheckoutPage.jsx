@@ -72,15 +72,6 @@ export default function CheckoutPage() {
         createdAt: new Date().toISOString(),
       };
       setReceipt(receiptData);
-      try {
-        const saved = JSON.parse(localStorage.getItem('abaya_emporium_orders') || '[]');
-        localStorage.setItem(
-          'abaya_emporium_orders',
-          JSON.stringify([receiptData, ...saved])
-        );
-      } catch {
-        localStorage.setItem('abaya_emporium_orders', JSON.stringify([receiptData]));
-      }
       if (!expressItem) clearCart();
     }, 900);
   };

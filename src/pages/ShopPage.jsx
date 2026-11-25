@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, SlidersHorizontal } from 'lucide-react';
-import { getStoreProducts } from '../data/products';
+import { PRODUCTS } from '../data/products';
 import {
   CATEGORIES,
   PRICE_RANGES,
@@ -20,7 +20,6 @@ const HERO_MODEL_IMAGE =
 export default function ShopPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false);
-  const PRODUCTS = getStoreProducts();
 
   const category = searchParams.get('category') || 'all';
   const subcategory = searchParams.get('subcategory') || 'all';
@@ -30,6 +29,19 @@ export default function ShopPage() {
   const price = searchParams.get('price') || 'all';
   const query = searchParams.get('q') || '';
   const sort = searchParams.get('sort') || 'featured';
+
+  useEffect(() => {
+    if (!searchParams.has('category') && !searchParams.has('subcategory')) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById('catalog')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [searchParams]);
 
   const startingPrice = useMemo(
     () => {
@@ -290,13 +302,10 @@ export default function ShopPage() {
 
         {visibleProducts.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-            <h3 style={{ marginBottom: '8px' }}>No matching pieces found</h3>
+            <h3 style={{ marginBottom: '8px' }}>No products available</h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '18px' }}>
-              Try another length, colour, or fabric, or clear the filters.
+              The product catalog is currently empty.
             </p>
-            <button type="button" className="btn-primary" onClick={resetFilters}>
-              Show All Products
-            </button>
           </div>
         ) : (
           <div className="product-grid">

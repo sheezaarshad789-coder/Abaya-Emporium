@@ -2,12 +2,8 @@ import { useReducer, useEffect, useState } from 'react';
 import { CartContext } from './CartContextBase';
 
 const initialState = () => {
-  try {
-    const saved = localStorage.getItem('abaya_emporium_cart');
-    return saved ? JSON.parse(saved) : [];
-  } catch {
-    return [];
-  }
+  localStorage.removeItem('abaya_emporium_cart');
+  return [];
 };
 
 function cartReducer(state, action) {
